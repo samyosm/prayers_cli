@@ -1,9 +1,12 @@
+mod args;
 mod init;
 
-use init::get_coords;
+use args::CliArgs;
+use clap::Parser;
 
 #[tokio::main]
 async fn main() {
-    let coords = get_coords().await.expect("valid coords");
-    println!("{} {}", coords.0, coords.1);
+    let args = CliArgs::parse();
+
+    println!("{:?}", args);
 }
