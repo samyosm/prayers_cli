@@ -1,6 +1,11 @@
+use clap::__derive_refs::once_cell::sync::Lazy;
 use reqwest;
 use salah::{DateTime, Local, Utc};
 use serde::{Deserialize, Serialize};
+
+// TODO: print a helpful message when an error occurs
+static CONFIG: Lazy<Config> =
+    Lazy::new(|| confy::load("prayers_utils", None).expect("a valid configuration"));
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
@@ -36,16 +41,10 @@ pub async fn fetch_coords() -> Result<(f64, f64), reqwest::Error> {
 }
 
 pub fn get_local_coords() -> Result<(f64, f64), &'static String> {
-    // TODO: print a helpful message when an error occurs
-    let config: Config = confy::load("prayers_utils", None).expect("a valid configuration");
-
-    Ok((config.latitude, config.longitude))
+    Ok((CONFIG.latitude, CONFIG.longitude))
 }
 
 pub fn get_formated_date(date: DateTime<Utc>) -> String {
-    // TODO: print a helpful message when an error occurs
-    let config: Config = confy::load("prayers_utils", None).expect("a valid configuration");
-
-    let format = config.time_format;
+    let format = &CONFIG.time_format;
     date.with_timezone(&Local).format(&format).to_string()
 }

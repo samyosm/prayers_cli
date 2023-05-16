@@ -28,7 +28,6 @@ fn handle_prayer_time(params: TimeCommand) {
         false => println!("{}", get_formated_date(prayer_time)),
     }
 }
-
 #[tokio::main]
 async fn main() -> Result<(), confy::ConfyError> {
     let args = CliArgs::parse();
