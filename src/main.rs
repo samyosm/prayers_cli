@@ -8,10 +8,18 @@ use prayer_utils::{get_prayer_times, string_to_prayer};
 use salah::Utc;
 use settings::init;
 
-use crate::settings::get_formated_date;
+use crate::{prayer_utils::prayer_to_string, settings::get_formated_date};
 
 fn handle_next_prayer(params: NextCommand) {
-    todo!("print next prayer time left ({})", params.time_left)
+    let prayers = get_prayer_times();
+
+    if params.time_left {
+        let (h, m) = prayers.time_remaining();
+        println!("{}h {}m", h, m);
+        return;
+    }
+
+    println!("{}", prayer_to_string(&prayers.next()));
 }
 
 fn handle_prayer_time(params: TimeCommand) {

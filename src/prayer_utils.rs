@@ -1,4 +1,4 @@
-use crate::settings::{self, get_calculation_method, get_local_coords, get_madhab};
+use crate::settings::{get_calculation_method, get_local_coords, get_madhab};
 use salah::prelude::*;
 
 pub fn string_to_prayer(name: &str) -> Prayer {
@@ -9,6 +9,17 @@ pub fn string_to_prayer(name: &str) -> Prayer {
         "maghrib" => Prayer::Maghrib,
         "isha" => Prayer::Isha,
         _ => panic!("unrecognized prayer name"),
+    }
+}
+
+pub fn prayer_to_string(prayer: &Prayer) -> &str {
+    match prayer {
+        Prayer::Fajr => "fajr",
+        Prayer::Dhuhr => "dhuhr",
+        Prayer::Asr => "asr",
+        Prayer::Maghrib => "maghrib",
+        Prayer::Isha => "isha",
+        _ => panic!("prayer unaccounted for"),
     }
 }
 
