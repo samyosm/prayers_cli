@@ -1,6 +1,6 @@
 use clap::__derive_refs::once_cell::sync::Lazy;
 use reqwest;
-use salah::{DateTime, Local, Utc};
+use salah::{DateTime, Local, Madhab, Method, Utc};
 use serde::{Deserialize, Serialize};
 
 // TODO: print a helpful message when an error occurs
@@ -12,6 +12,8 @@ pub struct Config {
     pub latitude: f64,
     pub longitude: f64,
     pub time_format: String,
+    pub calculation_method: String,
+    pub madhab: String,
 }
 
 impl ::std::default::Default for Config {
@@ -20,7 +22,32 @@ impl ::std::default::Default for Config {
             latitude: 40.0,
             longitude: -70.0,
             time_format: String::from("%Ih%m %p"),
+            calculation_method: String::from("isna"),
+            madhab: String::from("hanafi"),
         }
+    }
+}
+
+pub fn get_calculation_method() -> Method {
+    let local_method = &CONFIG.calculation_method;
+    match local_method.to_lowercase().as_ref() {
+        "isna" => Method::NorthAmerica,
+        "mml" => Method::MuslimWorldLeague,
+        "dubai" => Method::Dubai,
+        "moonsightingcommittee" => Method::MoonsightingCommittee,
+        "kuwait" => Method::Kuwait,
+        "egyptian" => Method::Egyptian,
+        "qatar" => Method::Qatar,
+        _ => panic!("unkown calculation method"),
+    }
+}
+
+pub fn get_madhab() -> Madhab {
+    let local_madhab = &CONFIG.madhab;
+    match local_madhab.to_lowercase().as_ref() {
+        "hanafi" => Madhab::Hanafi,
+        "shafi" => Madhab::Shafi,
+        _ => panic!("unkown madhab"),
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::settings::get_local_coords;
+use crate::settings::{self, get_calculation_method, get_local_coords, get_madhab};
 use salah::prelude::*;
 
 pub fn string_to_prayer(name: &str) -> Prayer {
@@ -18,7 +18,7 @@ pub fn get_prayer_times() -> PrayerTimes {
 
     let coords = Coordinates::new(lat, lon);
     let date = Utc::now().date();
-    let params = Configuration::with(Method::NorthAmerica, Madhab::Hanafi);
+    let params = Configuration::with(get_calculation_method(), get_madhab());
     PrayerSchedule::new()
         .on(date)
         .for_location(coords)
