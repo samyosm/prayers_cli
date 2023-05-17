@@ -24,7 +24,15 @@ impl ::std::default::Default for Config {
     }
 }
 
-pub async fn init() {}
+pub async fn init() {
+    let (lat, lon) = fetch_coords().await.expect("valid coords");
+    let mut tmp_config: Config = confy::load("prayers_utils", None).expect("a valid configuration");
+    tmp_config.latitude = lat;
+    tmp_config.longitude = lon;
+
+    confy::store("prayers_utils", None, tmp_config)
+        .expect("longitude and latitude to have been initialized")
+}
 
 pub async fn fetch_coords() -> Result<(f64, f64), reqwest::Error> {
     // Make an HTTP GET request to the geolocation API
